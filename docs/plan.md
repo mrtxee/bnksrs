@@ -54,7 +54,7 @@
 - таблица `transations`
     - ID autoincremental
     - timestamp — autogenereted by DB
-    - sender
+    - payee
     - recipient
     - amount long
     - decimal_factor byte
