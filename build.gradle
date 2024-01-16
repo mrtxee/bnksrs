@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
-//	id 'org.liquibase.gradle' version '2.2.0'
 }
 
 group = 'org.mrtxee'
@@ -24,24 +23,29 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2023.0.0")
+	mapstructVersion = "1.5.5.Final"
+	lombokMapstructBindingVersion = "0.2.0"
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-amqp'
- 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
- 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.kafka:spring-kafka'
-	implementation 'org.liquibase:liquibase-core'
-	implementation 'org.postgresql:postgresql'
-	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.amqp:spring-rabbit-test'
-	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
-	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	implementation "org.springframework.boot:spring-boot-starter-web"
+ 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.liquibase:liquibase-core"
+	implementation "org.postgresql:postgresql"
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0"
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+
+//	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+// 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+//	implementation 'org.springframework.kafka:spring-kafka'
+//	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+//	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+//	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+//	testImplementation 'org.springframework.kafka:spring-kafka-test'
+
 }
 
 dependencyManagement {
