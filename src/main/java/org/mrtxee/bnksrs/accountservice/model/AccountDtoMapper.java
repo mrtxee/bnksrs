@@ -4,9 +4,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface AccountMapper {
+public interface AccountDtoMapper {
 
-    AccountMapper MAPPER = Mappers.getMapper( AccountMapper.class );
+    AccountDtoMapper MAPPER = Mappers.getMapper( AccountDtoMapper.class );
 
     @Mapping(target = "rec", source = "id")
     AccountDto toDto(Account account);

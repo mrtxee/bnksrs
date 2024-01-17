@@ -27,12 +27,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto findById(Long id) {
-        Optional<Client> dao = repository.findById(id);
-        if (dao.isPresent()) {
-            return mapper.toClientDto(dao.get());
-        } else {
-            throw new BadRequestException("dao with id " + id + " not found");
+        Optional<Client> clientOptional = repository.findById(id);
+        if(clientOptional.isEmpty()){
+            throw new BadRequestException("Client with id " + id + " is not found");
         }
+        return mapper.toClientDto(clientOptional.get());
     }
 
     @Override
@@ -42,12 +41,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDto update(ClientDto client) {
-        Client dao = mapper.toClient(client);
-        if (repository.existsById(dao.getId())) {
-            return mapper.toClientDto(repository.save(dao));
+    public ClientDto update(ClientDto clientDto) {
+        Client client = mapper.toClient(clientDto);
+        if (repository.existsById(client.getId())) {
+            return mapper.toClientDto(repository.save(client));
         } else {
-            throw new ResourceNotFoundException("dao with id " + dao.getId() + " not found");
+            throw new ResourceNotFoundException("dao with id " + client.getId() + " not found");
         }
     }
 }

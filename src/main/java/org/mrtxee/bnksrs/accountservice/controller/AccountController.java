@@ -2,9 +2,8 @@ package org.mrtxee.bnksrs.accountservice.controller;
 
 import lombok.AllArgsConstructor;
 import org.mrtxee.bnksrs.accountservice.model.AccountDto;
+import org.mrtxee.bnksrs.accountservice.model.useless.AccountCreationDto;
 import org.mrtxee.bnksrs.accountservice.service.AccountService;
-import org.mrtxee.bnksrs.clientservcie.model.ClientDto;
-import org.mrtxee.bnksrs.clientservcie.service.ClientService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,16 +27,16 @@ public class AccountController {
         return service.createOrGet(account);
     }
 
-    @GetMapping("/{id}/")
-    public String addClientAccount(@PathVariable long id) {
-        return "TODO: узнать остаток на счете "+id;
+    @GetMapping("/{accountNumber}/")
+    public AccountDto read(@PathVariable long accountNumber) {
+        return service.findByAccountNumber(accountNumber);
     }
 
 
     /* TODO:
         1. зарегистрировать счет для клиента `HTTP POST /account/`
             -. только 1 счет. найти либо создать счет.
-            -. номер счета accountID генерируется автоматически: “4003”+<8 рандомных цифр>
+            -. номер счета accountNumber генерируется автоматически: “4003”+<8 рандомных цифр>
         2. узнать остаток на счете `HTTP GET /account/<accountID:int>/`
     * */
 
