@@ -1,5 +1,6 @@
 package org.mrtxee.bnksrs.accountservice.controller;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.mrtxee.bnksrs.accountservice.model.AccountDto;
 import org.mrtxee.bnksrs.accountservice.model.useless.AccountCreationDto;
@@ -18,8 +19,8 @@ public class AccountController {
     private final AccountService service;
 
     @GetMapping("/")
-    public String index() {
-        return "AccountController";
+    public List<AccountDto> index() {
+        return service.findAll();
     }
 
     @PostMapping("/")
