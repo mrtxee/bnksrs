@@ -4,6 +4,14 @@ public class ApplicationError {
     private int statusCode;
     private String message;
 
+    public ApplicationError() {
+    }
+
+    public ApplicationError(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
+
     public int getStatusCode() {
         return statusCode;
     }
@@ -17,14 +25,6 @@ public class ApplicationError {
     }
 
     public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public ApplicationError() {
-    }
-
-    public ApplicationError(int statusCode, String message) {
-        this.statusCode = statusCode;
         this.message = message;
     }
 }

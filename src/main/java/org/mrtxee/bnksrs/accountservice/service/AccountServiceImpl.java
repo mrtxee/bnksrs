@@ -1,5 +1,6 @@
 package org.mrtxee.bnksrs.accountservice.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -10,36 +11,43 @@ import org.mrtxee.bnksrs.accountservice.repository.AccountRepository;
 import org.mrtxee.bnksrs.clientservcie.repository.ClientRepository;
 import org.mrtxee.bnksrs.exceptions.BadRequestException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
-    private final static long ACCOUNT_NUMBER_PREFIX = 4003000000000000L;
+    private final static long MIN_TRANSFER_AMOUNT = 1;
+    private final static long MAX_TRANSFER_AMOUNT = 999999999;
     private final AccountRepository accountRepository;
     private final ClientRepository clientRepository;
     private final AccountDtoMapper accountDtoMapper = AccountDtoMapper.MAPPER;
     private final AccountNumberGenerator accountNumberGenerator;
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public List<AccountDto> findAll() {
         return accountRepository.findAll().stream().map(accountDtoMapper::toDto).toList();
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public AccountDto findByAccountNumber(Long accountNumber) {
         Optional<Account> accountOptional = accountRepository.getFirstByAccountNumber(accountNumber);
-        if(accountOptional.isEmpty()){
+        if (accountOptional.isEmpty()) {
             throw new BadRequestException("accountNumber " + accountNumber + " is not found");
         }
         return accountDtoMapper.toDto(accountOptional.get());
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public AccountDto createOrGet(AccountDto dto) {
         Account account = accountDtoMapper.toEntity(dto);
 
         if (!clientRepository.existsById(account.getClientId())) { //если не существует хозяин счета -> исключение
-            throw new BadRequestException("Client id" + account.getClientId() + "is not exists");
+            throw new BadRequestException("Client id " + account.getClientId() + " is not exists");
         }
         if (accountRepository.existsByClientId(account.getClientId())) { //если уже есть счет с таким хозяином -> вернуть счет
             return accountDtoMapper.toDto(accountRepository.getFirstByClientId(account.getClientId()));
@@ -49,8 +57,29 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDto update(AccountDto dto) {
-        return null;
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+    public TransactionResponse transact(TransactionRequest tr) {
+
+        if (tr.getTransactionAmount() < MIN_TRANSFER_AMOUNT || tr.getTransactionAmount() > MAX_TRANSFER_AMOUNT) {
+            throw new BadRequestException(String.format("transfer amount should be between %s and %s", MIN_TRANSFER_AMOUNT, MAX_TRANSFER_AMOUNT));
+        }
+
+        List<Account> agents = accountRepository.findByAccountNumberIn(Arrays.asList(tr.getPayee(), tr.getRecipient()));
+        if (agents.size() != 2) {
+            throw new BadRequestException("insufficient account number provided");
+        }
+        Account payee = agents.get(0).getAccountNumber() == tr.getPayee() ? agents.get(0) : agents.get(1);
+        Account recipient = agents.get(0).getAccountNumber() == tr.getPayee() ? agents.get(1) : agents.get(0);
+
+        if (payee.getAmount() < tr.getTransactionAmount()) {
+            return new TransactionResponse(tr, TransactionStatus.PAYEE_INSUFFICIENT_FUNDS, "payee insufficient funds. " + payee.getAccountNumber() + " has only " + payee.getAmount());
+        }
+
+        payee.setAmount(payee.getAmount() - tr.getTransactionAmount());
+        recipient.setAmount(recipient.getAmount() + tr.getTransactionAmount());
+        accountRepository.save(payee);
+        accountRepository.save(recipient);
+        return new TransactionResponse(tr, TransactionStatus.SUCCESS, "");
     }
 
 }

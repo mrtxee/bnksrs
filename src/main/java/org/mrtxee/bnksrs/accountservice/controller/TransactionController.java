@@ -1,9 +1,11 @@
 package org.mrtxee.bnksrs.accountservice.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.mrtxee.bnksrs.accountservice.service.AccountService;
+import org.mrtxee.bnksrs.accountservice.service.TransactionRequest;
+import org.mrtxee.bnksrs.accountservice.service.TransactionResponse;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,13 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/transaction")
 @AllArgsConstructor
 public class TransactionController {
+    private final AccountService accountService;
 
     @PostMapping("/")
-    public String addClientAccount() {
-        return "TODO: перевод между счетами";
+    public TransactionResponse transact(@RequestBody TransactionRequest TransactionRequest) {
+        return accountService.transact(TransactionRequest);
     }
 
     /* TODO: перевод между счетами `HTTP POST /transaction/`
-    * */
+     * */
 
 }

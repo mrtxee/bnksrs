@@ -38,10 +38,4 @@ public class ClientController {
         return service.create(client);
     }
 
-    /* TODO:
-        1. зарегистрировать клиента `HTTP POST /client/`
-        2. получить данные о клиенте `HTTP GET /client/<ID:int>/`
-            - вернуть пользователя и список его счетов
-    * */
-
 }

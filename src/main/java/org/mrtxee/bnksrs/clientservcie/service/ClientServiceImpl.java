@@ -9,44 +9,50 @@ import org.mrtxee.bnksrs.clientservcie.repository.ClientRepository;
 import org.mrtxee.bnksrs.exceptions.BadRequestException;
 import org.mrtxee.bnksrs.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+
 public class ClientServiceImpl implements ClientService {
-    private final ClientRepository repository;
-    private final ClientMapper mapper = ClientMapper.MAPPER;
+    private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper = ClientMapper.MAPPER;
 
-    public ClientServiceImpl(ClientRepository repository) {
-        this.repository = repository;
+    public ClientServiceImpl(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public List<ClientDto> findAll() {
-        return repository.findAll().stream().map(mapper::toClientDto).toList();
+        return clientRepository.findAll().stream().map(clientMapper::toClientDto).toList();
     }
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public ClientDto findById(Long id) {
-        Optional<Client> clientOptional = repository.findById(id);
-        if(clientOptional.isEmpty()){
+        Optional<Client> clientOptional = clientRepository.findById(id);
+        if (clientOptional.isEmpty()) {
             throw new BadRequestException("Client with id " + id + " is not found");
         }
-        return mapper.toClientDto(clientOptional.get());
+        return clientMapper.toClientDto(clientOptional.get());
     }
 
     @Override
-    @Transactional
-    public ClientDto create(ClientDto client) {
-        return mapper.toClientDto(repository.save(mapper.toClient(client)));
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+    public ClientDto create(ClientDto clientDto) {
+        return clientMapper.toClientDto(clientRepository.save(clientMapper.toClient(clientDto)));
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public ClientDto update(ClientDto clientDto) {
-        Client client = mapper.toClient(clientDto);
-        if (repository.existsById(client.getId())) {
-            return mapper.toClientDto(repository.save(client));
+        Client client = clientMapper.toClient(clientDto);
+        if (clientRepository.existsById(client.getId())) {
+            return clientMapper.toClientDto(clientRepository.save(client));
         } else {
-            throw new ResourceNotFoundException("dao with id " + client.getId() + " not found");
+            throw new ResourceNotFoundException("Client with id " + client.getId() + " is not found");
         }
     }
 }

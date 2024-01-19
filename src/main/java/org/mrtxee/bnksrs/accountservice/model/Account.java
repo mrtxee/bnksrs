@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="accounts", schema="public")
+@Table(name = "accounts", schema = "public")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="client_id", nullable=false)
+    @Column(name = "client_id", nullable = false)
     private Long clientId;
-    @Column(name="account_number", nullable=false)
+    @Column(name = "account_number", nullable = false)
     private Long accountNumber;
     private Double amount;
 }

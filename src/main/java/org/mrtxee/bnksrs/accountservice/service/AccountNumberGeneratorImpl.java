@@ -12,7 +12,6 @@ public class AccountNumberGeneratorImpl implements AccountNumberGenerator {
     private final static Random random = new Random();
     private final AccountRepository accountRepository;
 
-
     @Override
     public long generate() {
         long newAccountNumber;
