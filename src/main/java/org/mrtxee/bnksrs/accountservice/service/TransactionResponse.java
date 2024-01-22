@@ -15,6 +15,14 @@ public class TransactionResponse extends TransactionRequest {
         this.msg = null;
     }
 
+    @Override
+    public String toString() {
+        return "TransactionResponse{" +
+                super.getPayee() +" -> "+ super.getRecipient() +" ("+ super.getTransactionAmount()+") = "
+                + status + " " + msg
+                + '}';
+    }
+
     public TransactionResponse(TransactionRequest tr, TransactionStatus status, String msg) {
         super(tr.getPayee(), tr.getRecipient(), tr.getTransactionAmount());
         this.status = status;
