@@ -78,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
             accountRepository.save(recipient);
             return new TransactionResponse(tr, TransactionStatus.SUCCESS, "");
         } catch (Exception e) {
-            return new TransactionResponse(tr, TransactionStatus.CANCELLED, e.toString());
+            return new TransactionResponse(tr, TransactionStatus.FAIL, e.toString());
         }
 
     }
