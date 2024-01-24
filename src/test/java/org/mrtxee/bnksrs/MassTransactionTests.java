@@ -14,7 +14,6 @@ import org.mrtxee.bnksrs.accountservice.service.AccountService;
 import org.mrtxee.bnksrs.clientservcie.model.ClientDto;
 import org.mrtxee.bnksrs.clientservcie.repository.ClientRepository;
 import org.mrtxee.bnksrs.clientservcie.service.ClientService;
-import org.mrtxee.bnksrs.lto.TransferMoneyTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

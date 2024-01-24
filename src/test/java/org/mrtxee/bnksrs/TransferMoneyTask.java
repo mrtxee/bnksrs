@@ -1,4 +1,4 @@
-package org.mrtxee.bnksrs.lto;
+package org.mrtxee.bnksrs;
 
 import java.util.concurrent.Callable;
 import lombok.Data;
