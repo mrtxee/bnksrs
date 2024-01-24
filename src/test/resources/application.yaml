@@ -1,0 +1,7 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://ep-calm-violet-62110912.eu-central-1.aws.neon.tech/bnksrstestdb?sslmode=require
+        username: mrtxee
+        password: ilTbK7EFDu1d
+    liquibase:
+        change-log: classpath:db/changelog/db.changelog-master.xml

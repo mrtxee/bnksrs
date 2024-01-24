@@ -30,34 +30,34 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <insert tableName="clients">
-            <column name="first_name" value="Аарон"/>
-            <column name="last_name" value="Гнилов"/>
-            <column name="patronymic" value=""/>
-        </insert>
-        <insert tableName="clients">
-            <column name="first_name" value="Бил"/>
-            <column name="last_name" value="Гейтс"/>
-        </insert>
-        <insert tableName="clients">
-            <column name="first_name" value="Дмитрий"/>
-            <column name="last_name" value="Пантелеев"/>
-            <column name="patronymic" value="Иванович"/>
-        </insert>
-        <insert tableName="accounts">
-            <column name="client_id" value="1"/>
-            <column name="account_number" value="4003000000000001"/>
-            <column name="amount" value="1000"/>
-        </insert>
-        <insert tableName="accounts">
-            <column name="client_id" value="2"/>
-            <column name="account_number" value="4003000000000002"/>
-            <column name="amount" value="1000"/>
-        </insert>
-        <insert tableName="accounts">
-            <column name="client_id" value="3"/>
-            <column name="account_number" value="4003000000000003"/>
-            <column name="amount" value="1000"/>
-        </insert>
+<!--        <insert tableName="clients">-->
+<!--            <column name="first_name" value="Аарон"/>-->
+<!--            <column name="last_name" value="Гнилов"/>-->
+<!--            <column name="patronymic" value=""/>-->
+<!--        </insert>-->
+<!--        <insert tableName="clients">-->
+<!--            <column name="first_name" value="Бил"/>-->
+<!--            <column name="last_name" value="Гейтс"/>-->
+<!--        </insert>-->
+<!--        <insert tableName="clients">-->
+<!--            <column name="first_name" value="Дмитрий"/>-->
+<!--            <column name="last_name" value="Пантелеев"/>-->
+<!--            <column name="patronymic" value="Иванович"/>-->
+<!--        </insert>-->
+<!--        <insert tableName="accounts">-->
+<!--            <column name="client_id" value="1"/>-->
+<!--            <column name="account_number" value="4003000000000001"/>-->
+<!--            <column name="amount" value="1000"/>-->
+<!--        </insert>-->
+<!--        <insert tableName="accounts">-->
+<!--            <column name="client_id" value="2"/>-->
+<!--            <column name="account_number" value="4003000000000002"/>-->
+<!--            <column name="amount" value="1000"/>-->
+<!--        </insert>-->
+<!--        <insert tableName="accounts">-->
+<!--            <column name="client_id" value="3"/>-->
+<!--            <column name="account_number" value="4003000000000003"/>-->
+<!--            <column name="amount" value="1000"/>-->
+<!--        </insert>-->
     </changeSet>
 </databaseChangeLog>

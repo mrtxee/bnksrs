@@ -34,8 +34,10 @@ dependencies {
 	implementation "org.postgresql:postgresql"
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0"
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok"
+//	implementation 'com.github.javafaker:javafaker:1.0.2' // tests only
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
+
 
 //	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 // 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'

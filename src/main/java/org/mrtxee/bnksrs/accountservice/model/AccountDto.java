@@ -12,4 +12,9 @@ public class AccountDto {
     private Long clientId;
     private Long accountNumber;
     private Double amount;
+
+    public AccountDto(Long clientId, Double amount) {
+        this.clientId = clientId;
+        this.amount = amount;
+    }
 }
