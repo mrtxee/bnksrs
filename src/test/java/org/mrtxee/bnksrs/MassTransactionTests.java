@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.mrtxee.bnksrs.accountservice.model.AccountDto;
 import org.mrtxee.bnksrs.accountservice.repository.AccountRepository;
@@ -26,9 +27,9 @@ class MassTransactionTests {
     @Autowired
     private ClientService clientService;
     @Autowired
-    private AccountRepository accountRepository;
+    private static AccountRepository accountRepository;
     @Autowired
-    private ClientRepository clientRepository;
+    private static ClientRepository clientRepository;
 
     private double getAccountsSum(List<AccountDto> accounts) {
         double result = 0;
@@ -80,9 +81,13 @@ class MassTransactionTests {
         //+сравнить сумму всех транзакций до и после
         sum2 = getAccountsSum(accounts);
         assertThat(sum1 - sum2).isEqualTo(0);
-        //+очистить базу
+    }
+
+    @AfterAll
+    static void cleanDataBase(){
         accountRepository.deleteAll();
         clientRepository.deleteAll();
     }
+
 
 }
