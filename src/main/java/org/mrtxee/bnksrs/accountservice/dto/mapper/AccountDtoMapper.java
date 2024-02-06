@@ -1,8 +1,10 @@
-package org.mrtxee.bnksrs.accountservice.model;
+package org.mrtxee.bnksrs.accountservice.dto.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.mrtxee.bnksrs.accountservice.dto.AccountDto;
+import org.mrtxee.bnksrs.accountservice.model.Account;
 
 @Mapper(componentModel = "spring")
 public interface AccountDtoMapper {

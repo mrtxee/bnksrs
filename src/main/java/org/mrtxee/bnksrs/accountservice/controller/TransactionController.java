@@ -2,8 +2,8 @@ package org.mrtxee.bnksrs.accountservice.controller;
 
 import lombok.AllArgsConstructor;
 import org.mrtxee.bnksrs.accountservice.service.AccountService;
-import org.mrtxee.bnksrs.accountservice.service.TransactionRequest;
-import org.mrtxee.bnksrs.accountservice.service.TransactionResponse;
+import org.mrtxee.bnksrs.accountservice.dto.TransactionRequest;
+import org.mrtxee.bnksrs.accountservice.dto.TransactionResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

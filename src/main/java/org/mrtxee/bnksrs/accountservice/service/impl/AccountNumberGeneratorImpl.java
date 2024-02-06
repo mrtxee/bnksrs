@@ -1,8 +1,9 @@
-package org.mrtxee.bnksrs.accountservice.service;
+package org.mrtxee.bnksrs.accountservice.service.impl;
 
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.mrtxee.bnksrs.accountservice.repository.AccountRepository;
+import org.mrtxee.bnksrs.accountservice.service.AccountNumberGenerator;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,7 @@ public class AccountNumberGeneratorImpl implements AccountNumberGenerator {
         long newAccountNumber;
         do {
             newAccountNumber = ACCOUNT_NUMBER_PREFIX + random.nextInt(999999999);
+            //timestamp выбросить если генерация более минуты
         } while (accountRepository.existsByAccountNumber(newAccountNumber));
         return newAccountNumber;
     }

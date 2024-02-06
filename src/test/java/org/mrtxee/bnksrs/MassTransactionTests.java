@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
-import org.mrtxee.bnksrs.accountservice.model.AccountDto;
+import org.mrtxee.bnksrs.accountservice.dto.AccountDto;
 import org.mrtxee.bnksrs.accountservice.repository.AccountRepository;
 import org.mrtxee.bnksrs.accountservice.service.AccountService;
 import org.mrtxee.bnksrs.clientservcie.model.ClientDto;
@@ -66,6 +66,51 @@ class MassTransactionTests {
             do {
                 recipient = accounts.get(random.nextInt(0, accounts.size())).getAccountNumber();
             } while (payee == recipient);
+            double transactionSum = random.nextInt(TRANSACTION_MIN_SUM, TRANSACTION_MAX_SUM + 1);
+            trTasks.add(new TransferMoneyTask(payee, recipient, transactionSum, accountService, i));
+        }
+        sum1 = getAccountsSum(accounts);
+        //+выполнить транзакции
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(THREADS_COUNT);
+        try {
+            executor.invokeAll(trTasks);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        //+сравнить сумму всех транзакций до и после
+        sum2 = getAccountsSum(accounts);
+        assertThat(sum1 - sum2).isEqualTo(0);
+    }
+
+
+    @Test
+    void multyTheradFuckupTest() {
+        final int ACCOUNTS_COUNT = 2;
+        final double ACCOUNTS_START_BALANCE = 4000;
+        final int TRANSACTIONS_COUNT = 100;
+        final int TRANSACTION_MIN_SUM = 1;
+        final int TRANSACTION_MAX_SUM = 1;
+        final int THREADS_COUNT = 8;
+
+        final Random random = new Random();
+        final double sum1, sum2;
+        //+зарегистрировать 3 пользователя
+        //+зарегистрировать каждому счет
+        List<AccountDto> accounts = new ArrayList<>();
+        for (int i = 0; i < ACCOUNTS_COUNT; i++) {
+            ClientDto client = clientService.create(new ClientDto(0L, RandomNameGetter.getRandomName(), RandomNameGetter.getRandomName(), RandomNameGetter.getRandomName()));
+            accounts.add(accountService.createOrGet(new AccountDto(client.getRec(), ACCOUNTS_START_BALANCE)));
+        }
+        //+сгенерировать 100 транзакций между сетами
+        List<TransferMoneyTask> trTasks = new LinkedList<>();
+        for (int i = 0; i < TRANSACTIONS_COUNT; i++) {
+//            long recipient,  = accounts.get(random.nextInt(0, accounts.size())).getAccountNumber();
+//            do {
+//                recipient = accounts.get(random.nextInt(0, accounts.size())).getAccountNumber();
+//            } while (payee == recipient);
+            long payee = accounts.get(0).getAccountNumber();
+            long recipient = accounts.get(1).getAccountNumber();
+
             double transactionSum = random.nextInt(TRANSACTION_MIN_SUM, TRANSACTION_MAX_SUM + 1);
             trTasks.add(new TransferMoneyTask(payee, recipient, transactionSum, accountService, i));
         }

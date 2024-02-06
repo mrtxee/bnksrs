@@ -3,8 +3,8 @@ package org.mrtxee.bnksrs;
 import java.util.concurrent.Callable;
 import lombok.Data;
 import org.mrtxee.bnksrs.accountservice.service.AccountService;
-import org.mrtxee.bnksrs.accountservice.service.TransactionRequest;
-import org.mrtxee.bnksrs.accountservice.service.TransactionResponse;
+import org.mrtxee.bnksrs.accountservice.dto.TransactionRequest;
+import org.mrtxee.bnksrs.accountservice.dto.TransactionResponse;
 
 @Data
 public class TransferMoneyTask implements Callable<Boolean> {

@@ -2,7 +2,7 @@ package org.mrtxee.bnksrs.accountservice.controller;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.mrtxee.bnksrs.accountservice.model.AccountDto;
+import org.mrtxee.bnksrs.accountservice.dto.AccountDto;
 import org.mrtxee.bnksrs.accountservice.service.AccountService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

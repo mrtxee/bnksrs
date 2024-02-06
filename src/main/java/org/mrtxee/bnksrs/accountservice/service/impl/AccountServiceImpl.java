@@ -1,13 +1,18 @@
-package org.mrtxee.bnksrs.accountservice.service;
+package org.mrtxee.bnksrs.accountservice.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.mrtxee.bnksrs.accountservice.dto.TransactionRequest;
+import org.mrtxee.bnksrs.accountservice.dto.TransactionResponse;
+import org.mrtxee.bnksrs.accountservice.dto.TransactionStatus;
 import org.mrtxee.bnksrs.accountservice.model.Account;
-import org.mrtxee.bnksrs.accountservice.model.AccountDto;
-import org.mrtxee.bnksrs.accountservice.model.AccountDtoMapper;
+import org.mrtxee.bnksrs.accountservice.dto.AccountDto;
+import org.mrtxee.bnksrs.accountservice.dto.mapper.AccountDtoMapper;
 import org.mrtxee.bnksrs.accountservice.repository.AccountRepository;
+import org.mrtxee.bnksrs.accountservice.service.AccountNumberGenerator;
+import org.mrtxee.bnksrs.accountservice.service.AccountService;
 import org.mrtxee.bnksrs.clientservcie.repository.ClientRepository;
 import org.mrtxee.bnksrs.exceptions.BadRequestException;
 import org.springframework.stereotype.Service;
@@ -59,6 +64,14 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     public TransactionResponse transact(TransactionRequest tr) {
+        /*
+        * TransactionStatus.FAIL не кетчится т.к. в этом методе нет транзакций изза того, что AccountServiceImpl
+        * представляет собой прокси.
+        * Решение в селфИнджекции, либо @Ретрай, либо добавление доп слоя, который будет вызывать transact(); -- разруливание коллизии путем пессимистичной блокировки
+        * т.к. вероятность коллизии маленькая -> стоит использовать оптимистичную блокировку, которая заключаетс в том, что
+        * делаем аналогично CAS при помощи Hibernate @Version
+        * */
+
         if (tr.getTransactionAmount() < MIN_TRANSFER_AMOUNT || tr.getTransactionAmount() > MAX_TRANSFER_AMOUNT) {
             throw new BadRequestException(String.format("transfer amount should be between %s and %s", MIN_TRANSFER_AMOUNT, MAX_TRANSFER_AMOUNT));
         }

@@ -1,4 +1,4 @@
-package org.mrtxee.bnksrs.accountservice.model;
+package org.mrtxee.bnksrs.accountservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
